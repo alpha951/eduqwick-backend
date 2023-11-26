@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 
 const { DB_URL } = require("./server-config");
 
-const connect = async () => {
+const dbConnect = async () => {
   await mongoose.connect(DB_URL);
 };
 
 module.exports = {
-  connect,
+  dbConnect,
 };

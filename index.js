@@ -12,8 +12,22 @@ app.use(morgan("dev"));
 
 app.use("/", routes);
 
-app.listen(ServerConfig.PORT, function () {
-  console.log(
-    `App listening on port ${ServerConfig.PORT}!`.brightCyan.bgMagenta
-  );
-});
+async function start() {
+  try {
+    await ServerConfig.dbConnect()
+      .then(() => {
+        console.log("MongoDB connected".brightCyan.bgMagenta);
+      })
+      .then(() => {
+        app.listen(ServerConfig.PORT, function () {
+          console.log(
+            `App listening on port ${ServerConfig.PORT}!`.brightCyan.bgMagenta
+          );
+        });
+      });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+start();

@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const { ServerConfig } = require("./config");
+const { ServerConfig, Logger, dbConnect } = require("./config");
 const morgan = require("morgan");
 const colors = require("@colors/colors");
 const app = express();
@@ -12,22 +12,12 @@ app.use(morgan("dev"));
 
 app.use("/", routes);
 
-async function start() {
-  try {
-    await ServerConfig.dbConnect()
-      .then(() => {
-        console.log("MongoDB connected".brightCyan.bgMagenta);
-      })
-      .then(() => {
-        app.listen(ServerConfig.PORT, function () {
-          console.log(
-            `App listening on port ${ServerConfig.PORT}!`.brightCyan.bgMagenta
-          );
-        });
-      });
-  } catch (error) {
-    console.log(error);
-  }
-}
+const setupAndStartServer = async function () {
+  app.listen(ServerConfig.PORT, async function () {
+    console.log(`Server started at PORT ${ServerConfig.PORT}`);
+    await dbConnect();
+    console.log("Mongo db connected");
+  });
+};
 
-start();
+setupAndStartServer();

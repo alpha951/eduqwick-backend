@@ -39,6 +39,11 @@ const profileSchema = new mongoose.Schema(
     applications: {
       type: [String],
     },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "userId can't be blank"],
+    },
   },
   { timestamps: true }
 );
